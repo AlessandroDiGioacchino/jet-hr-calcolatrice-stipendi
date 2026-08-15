@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcolatrice retribuzione netta - Jet HR</title>
+</head>
+<body>
+
+  <h1>Calcolatrice retribuzione netta (da RAL a netto)</h1>
+  <p>
+    Simulatore per lavoratore a tempo indeterminato con residenza a Milano.
+  </p>
+
+  <!-- Visualizzazione errori -->
+  {% if error %}<p style="color: red;">
+    <strong>Errore:</strong> {{ error }}
+  </p>{% endif %}
+
+  <!-- Form inserimento dati -->
+  <form method="POST" action="/">
+    <p>
+      <label for="ral"><strong>
+        Retribuzione Annua Lorda (RAL) in €:
+      </strong></label><br>
+      <input type="number" step="500" min="0" name="ral" id="ral"
+              value="{{ ral_default }}" required>
+    </p>
+
+    <p>
+      <label for="mensilita"><strong>
+        Numero di mensilità:
+      </strong></label><br>
+      <select name="mensilita" id="mensilita">
+        <option value="12"
+                {% if mensilita_default == 12 %}selected{% endif %}
+
+          >12 mensilità
+        </option>
+        <option value="13"
+                {% if mensilita_default == 13 %}selected{% endif %}
+
+          >13 mensilità
+        </option>
+        <option value="14"
+                {% if mensilita_default == 14 %}selected{% endif %}
+
+          >14 mensilità
+        </option>
+      </select>
+    </p>
+
+    <p>
+      <button type="submit">Calcola</button>
+    </p>
+  </form>
+
+  <!-- Risultati calcolo -->
+  {% if risultato %}<hr>
+  <h2>Riepilogo risultati</h2>
+  <ul>
+    <li>
+      <strong>Netto mensile stimato:</strong>
+      €{{ "{:,.2f}".format(risultato.netto_mensile) }}
+      (su {{ risultato.mensilita }} mensilità)
+    </li>
+    <li>
+      <strong>Netto annuale:</strong>
+      €{{ "{:,.2f}".format(risultato.netto_annuo) }}
+    </li>
+    <li>
+      <strong>Pressione fiscale e contributiva effettiva:</strong>
+      {{ risultato.aliquota_fiscale_effettiva }}%
+    </li>
+  </ul>
+
+  <h3>Dettaglio trattenute al lordo</h3>
+  <table border="1" cellpadding="6" cellspacing="0">
+      <thead>
+          <tr>
+              <th>Voce</th>
+              <th>Dettagli / Aliquote</th>
+              <th>Importo (€)</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr>
+              <td><strong>Retribuzione Annua Lorda (RAL)</strong></td>
+              <td>Valore iniziale di ingresso</td>
+              <td>{{ "{:,.2f}".format(risultato.ral) }}</td>
+          </tr>
+          <tr>
+              <td>Contributi previdenziali (INPS)</td>
+              <td>
+                Aliquota lavoratore dipendente: {{ risultato.tassa_inps }}%
+              </td>
+              <td>-{{ "{:,.2f}".format(risultato.quantita_inps) }}</td>
+          </tr>
+          <tr>
+              <td><strong>Imponibile fiscale IRPEF</strong></td>
+              <td>RAL meno contributi INPS</td>
+              <td><strong>
+                {{ "{:,.2f}".format(risultato.imponibile_irpef) }}
+              </strong></td>
+          </tr>
+          <tr>
+              <td>IRPEF lorda</td>
+              <td>Scaglioni progressivi (23% / 35% / 43%)</td>
+              <td>{{ "{:,.2f}".format(risultato.lordo_irpef) }}</td>
+          </tr>
+          <tr>
+              <td>Detrazione da lavoro dipendente</td>
+              <td>Art. 13 TUIR (riduzione d'imposta)</td>
+              <td>
+                +{{ "{:,.2f}".format(risultato.detrazione_lavoro_dipendente) }}
+              </td>
+          </tr>
+          <tr>
+              <td>IRPEF netta</td>
+              <td>Massimo tra zero e IRPEF lorda meno detrazioni</td>
+              <td>-{{ "{:,.2f}".format(risultato.netto_irpef) }}</td>
+          </tr>
+          <tr>
+              <td>Addizionale regionale IRPEF</td>
+              <td>Regione Lombardia (aliquote progressive)</td>
+              <td>-{{ "{:,.2f}".format(risultato.tassa_regionale) }}</td>
+          </tr>
+          <tr>
+              <td>Addizionale comunale IRPEF</td>
+              <td>Comune di Milano (0,80% con esenzione fino a €23.000)</td>
+              <td>-{{ "{:,.2f}".format(risultato.tassa_comunale) }}</td>
+          </tr>
+          <tr>
+              <td><strong>Totale trattenute</strong></td>
+              <td>INPS più IRPEF netta più addizionali</td>
+              <td><strong>
+                -{{ "{:,.2f}".format(risultato.totale_tasse_deduzioni) }}
+              </strong></td>
+          </tr>
+          <tr>
+              <td><strong>Netto annuale finale</strong></td>
+              <td>RAL meno totale trattenute</td>
+              <td><strong>
+                {{ "{:,.2f}".format(risultato.netto_annuo) }}
+              </strong></td>
+          </tr>
+      </tbody>
+  </table>
+  <br/>
+  {% endif %}
+
+  <hr>
+  <h4>Assunzioni del modello:</h4>
+  <ul>
+      <li>Contratto a tempo indeterminato standard (365 giorni lavorativi).</li>
+      <li>Residenza fiscale a Milano (Lombardia).</li>
+      <li>Nessuna detrazione per familiari a carico o agevolazioni speciali.</li>
+  </ul>
+
+</body>
+</html>
