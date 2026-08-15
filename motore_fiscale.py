@@ -22,45 +22,46 @@ class CalcoloStipendioItaliano:
     netto_mensile: float
     aliquota_fiscale_effettiva: float
 
-  @classmethod
-  def calcola_inps( cls, ral: float ) -> float:
-    return round( ral * cls.INPS_TARIFFA_DIPENDENTI, 2 )
+  def __init__( self, ral: float ):
+    self.ral = ral
 
-  @classmethod
-  def calcola( cls, ral: float, mensilita: int = 13 ) -> RisultatoCalcolo:
-    if ral <= 0:
-      return cls.RisultatoCalcolo(
+  def calcola_inps( self ) -> float:
+    return round( self.ral * self.INPS_TARIFFA_DIPENDENTI, 2 )
+
+  def calcola( self, mensilita: int = 13 ) -> RisultatoCalcolo:
+    if self.ral <= 0:
+      return self.RisultatoCalcolo(
         ral=.0, mensilita=mensilita,
-        tassa_inps=cls.INPS_TARIFFA_DIPENDENTI * 100, quantita_inps=.0,
+        tassa_inps=self.INPS_TARIFFA_DIPENDENTI * 100, quantita_inps=.0,
         imponibile_irpef=.0, lordo_irpef=.0, detrazione_lavoro_dipendente=.0,
         netto_irpef=.0, tassa_regionale=.0, tassa_comunale=.0,
         totale_tasse_deduzioni=.0, netto_annuo=.0, netto_mensile=.0,
         aliquota_fiscale_effettiva=.0
       )
 
-    inps = cls.calcola_inps( ral )
-    reddito_imponibile = max( .0, ral - inps )
+    inps = self.calcola_inps()
+    reddito_imponibile = max( .0, self.ral - inps )
 
-    lordo_irpef = cls.calcola_lordo_irpef( reddito_imponibile )
-    deduzione = cls.calcola_detrazione_dipendenti( reddito_imponibile )
+    lordo_irpef = self.calcola_lordo_irpef( reddito_imponibile )
+    deduzione = self.calcola_detrazione_dipendenti( reddito_imponibile )
     netto_irpef = max( .0, round( lordo_irpef - deduzione ), 2 )
 
-    tassa_regionale = cls.calcola_tassa_regionale_lombardia( reddito_imponibile )
-    tassa_comunale = cls.calcola_tassa_milano( reddito_imponibile )
+    tassa_regionale = self.calcola_tassa_regionale_lombardia( reddito_imponibile )
+    tassa_comunale = self.calcola_tassa_milano( reddito_imponibile )
 
     totale_deduzioni = round( inps + lordo_irpef + tassa_regionale +
                               tassa_comunale, 2 )
 
-    netto_annuo = round( ral - totale_deduzioni, 2 )
+    netto_annuo = round( self.ral - totale_deduzioni, 2 )
     netto_mensile = ( round( netto_annuo / mensilita, 2 ) if mensilita > 0
                       else .0 )
 
-    aliquota_fiscale_effettiva = ( round( ( totale_deduzioni / ral ) * 100, 2 )
-                                   if ral > 0 else .0 )
+    aliquota_fiscale_effettiva = ( round( ( totale_deduzioni / self.ral )
+                                          * 100, 2 ) if self.ral > 0 else .0 )
 
-    return cls.RisultatoCalcolo(
-      ral=ral, mensilita=mensilita,
-      tassa_inps=round( cls.INPS_TARIFFA_DIPENDENTI * 100, 2),
+    return self.RisultatoCalcolo(
+      ral=self.ral, mensilita=mensilita,
+      tassa_inps=round( self.INPS_TARIFFA_DIPENDENTI * 100, 2),
       quantita_inps=inps, imponibile_irpef=round( reddito_imponibile, 2 ),
       lordo_irpef=lordo_irpef, detrazione_lavoro_dipendente=deduzione,
       netto_irpef=netto_irpef, tassa_regionale=tassa_regionale,
