@@ -13,8 +13,8 @@
   </p>
 
   <!-- Visualizzazione errori -->
-  {% if error %}<p style="color: red;">
-    <strong>Errore:</strong> {{ error }}
+  {% if errore %}<p style="color: red;">
+    <strong>Errore:</strong> {{ errore }}
   </p>{% endif %}
 
   <!-- Form inserimento dati -->
@@ -23,7 +23,7 @@
       <label for="ral"><strong>
         Retribuzione Annua Lorda (RAL) in €:
       </strong></label><br>
-      <input type="number" step="500" min="0" name="ral" id="ral"
+      <input type="text" step="500" min="0" name="ral" id="ral"
               value="{{ ral_default }}" required>
     </p>
 
@@ -61,12 +61,12 @@
   <ul>
     <li>
       <strong>Netto mensile stimato:</strong>
-      €{{ "{:,.2f}".format(risultato.netto_mensile) }}
+      €{{ risultato.netto_mensile | valuta }}
       (su {{ risultato.mensilita }} mensilità)
     </li>
     <li>
       <strong>Netto annuale:</strong>
-      €{{ "{:,.2f}".format(risultato.netto_annuo) }}
+      €{{ risultato.netto_annuo | valuta }}
     </li>
     <li>
       <strong>Pressione fiscale e contributiva effettiva:</strong>
@@ -87,61 +87,61 @@
           <tr>
               <td><strong>Retribuzione Annua Lorda (RAL)</strong></td>
               <td>Valore iniziale di ingresso</td>
-              <td>{{ "{:,.2f}".format(risultato.ral) }}</td>
+              <td>{{ risultato.ral | valuta }}</td>
           </tr>
           <tr>
               <td>Contributi previdenziali (INPS)</td>
               <td>
                 Aliquota lavoratore dipendente: {{ risultato.tassa_inps }}%
               </td>
-              <td>-{{ "{:,.2f}".format(risultato.quantita_inps) }}</td>
+              <td>-{{ risultato.quantita_inps | valuta }}</td>
           </tr>
           <tr>
               <td><strong>Imponibile fiscale IRPEF</strong></td>
               <td>RAL meno contributi INPS</td>
               <td><strong>
-                {{ "{:,.2f}".format(risultato.imponibile_irpef) }}
+                {{ risultato.imponibile_irpef | valuta }}
               </strong></td>
           </tr>
           <tr>
               <td>IRPEF lorda</td>
               <td>Scaglioni progressivi (23% / 35% / 43%)</td>
-              <td>{{ "{:,.2f}".format(risultato.lordo_irpef) }}</td>
+              <td>{{ risultato.lordo_irpef | valuta }}</td>
           </tr>
           <tr>
               <td>Detrazione da lavoro dipendente</td>
               <td>Art. 13 TUIR (riduzione d'imposta)</td>
               <td>
-                +{{ "{:,.2f}".format(risultato.detrazione_lavoro_dipendente) }}
+                +{{ risultato.detrazione_lavoro_dipendente | valuta }}
               </td>
           </tr>
           <tr>
               <td>IRPEF netta</td>
               <td>Massimo tra zero e IRPEF lorda meno detrazioni</td>
-              <td>-{{ "{:,.2f}".format(risultato.netto_irpef) }}</td>
+              <td>-{{ risultato.netto_irpef | valuta }}</td>
           </tr>
           <tr>
               <td>Addizionale regionale IRPEF</td>
               <td>Regione Lombardia (aliquote progressive)</td>
-              <td>-{{ "{:,.2f}".format(risultato.tassa_regionale) }}</td>
+              <td>-{{ risultato.tassa_regionale | valuta }}</td>
           </tr>
           <tr>
               <td>Addizionale comunale IRPEF</td>
-              <td>Comune di Milano (0,80% con esenzione fino a €23.000)</td>
-              <td>-{{ "{:,.2f}".format(risultato.tassa_comunale) }}</td>
+              <td>Comune di Milano (0,80% con esenzione fino a €23'000)</td>
+              <td>-{{ risultato.tassa_comunale | valuta }}</td>
           </tr>
           <tr>
               <td><strong>Totale trattenute</strong></td>
               <td>INPS più IRPEF netta più addizionali</td>
               <td><strong>
-                -{{ "{:,.2f}".format(risultato.totale_tasse_deduzioni) }}
+                -{{ risultato.totale_tasse_deduzioni | valuta }}
               </strong></td>
           </tr>
           <tr>
               <td><strong>Netto annuale finale</strong></td>
               <td>RAL meno totale trattenute</td>
               <td><strong>
-                {{ "{:,.2f}".format(risultato.netto_annuo) }}
+                {{ risultato.netto_annuo | valuta }}
               </strong></td>
           </tr>
       </tbody>
