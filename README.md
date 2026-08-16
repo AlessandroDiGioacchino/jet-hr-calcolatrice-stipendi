@@ -21,7 +21,7 @@ Il simulatore implementa il modello fiscale e contributivo per un
 1. **Contributi previdenziali (INPS)**:
    - Aliquota IVS a carico del dipendente: **9,19%** applicata direttamente
    sulla RAL.
-   - $ \text{Imponibile fiscale IRPEF} = \text{RAL} - \text{INPS} $
+   - $\text{Imponibile fiscale IRPEF} = \text{RAL} - \text{INPS}$
 
 2. **IRPEF lorda (scaglioni nazionali - TUIR art. 11)**:
    - Fino a €28'000: **23%**
@@ -32,7 +32,7 @@ Il simulatore implementa il modello fiscale e contributivo per un
    - Fino a €15'000: €1.955
    - Tra €15'000 e €28'000: formula decrescente con base €1'910
    - Tra €28'000 e €50'000: formula decrescente fino ad azzeramento
-   - $ \text{IRPEF netta} = \max(0, \text{IRPEF lorda} - \text{detrazioni}) $
+   - $\text{IRPEF netta} = \max(0, \text{IRPEF lorda} - \text{detrazioni})$
 
 4. **Addizionale regionale (Lombardia)**:
    - Aliquote progressive per scaglioni (1,23%, 1,58%, 1,72%, 1,73%).
