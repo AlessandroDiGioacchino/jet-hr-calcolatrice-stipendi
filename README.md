@@ -24,26 +24,26 @@ Il simulatore implementa il modello fiscale e contributivo per un
    - $ \text{Imponibile fiscale IRPEF} = \text{RAL} - \text{INPS} $
 
 2. **IRPEF lorda (scaglioni nazionali - TUIR art. 11)**:
-   - Fino a €28.000: **23%**
-   - Tra €28.000 e €50.000: **35%**
-   - Oltre €50.000: **43%**
+   - Fino a €28'000: **23%**
+   - Tra €28'000 e €50'000: **35%**
+   - Oltre €50'000: **43%**
 
 3. **Detrazione da lavoro dipendente (TUIR art. 13)**:
-   - Fino a €15.000: €1.955
-   - Tra €15.000 e €28.000: formula decrescente con base €1.910
-   - Tra €28.000 e €50.000: formula decrescente fino ad azzeramento
+   - Fino a €15'000: €1.955
+   - Tra €15'000 e €28'000: formula decrescente con base €1'910
+   - Tra €28'000 e €50'000: formula decrescente fino ad azzeramento
    - $ \text{IRPEF netta} = \max(0, \text{IRPEF lorda} - \text{detrazioni}) $
 
 4. **Addizionale regionale (Lombardia)**:
    - Aliquote progressive per scaglioni (1,23%, 1,58%, 1,72%, 1,73%).
 
-5. **Addizionale momunale (Milano)**:
+5. **Addizionale comunale (Milano)**:
    - Aliquota ordinaria: **0,80%**
    - Esenzione totale (no-tax area comunale) per imponibili fino a **€23'000**.
 
 ---
 
-## 🚀 Come Eseguire il Progetto in Locale
+## 🚀 Come eseguire il progetto in locale
 
 ### Prerequisiti
 - Python 3.10+
@@ -53,7 +53,7 @@ Il simulatore implementa il modello fiscale e contributivo per un
 # 1. Clona il repository o entra nella cartella
 cd jet-hr-calcolatrice-stipendi
 
-# 2. Crea ed attiva un virtual environment
+# 2. Crea e attiva un virtual environment
 python -m venv jet-hr
 source jet-hr/bin/activate  # Su Windows: jet-hr\Scripts\activate
 
