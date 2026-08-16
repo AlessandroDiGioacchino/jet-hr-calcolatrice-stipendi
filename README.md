@@ -2,7 +2,7 @@
 # Jet HR - Calcolatrice stipendio
 
 > 🌐 **Live demo:**
-[https://jet-hr-calcolatrice-stipendio.onrender.com/](https://jet-hr-calcolatrice-stipendio.onrender.com/
+[https://jet-hr-calcolatrice-stipendio.onrender.com](https://jet-hr-calcolatrice-stipendio.onrender.com)
 
 Prototipo software per la simulazione e scomposizione della retribuzione lorda
 (RAL) in retribuzione netta, sviluppato per il team **Cost-Saving** di Jet HR.
