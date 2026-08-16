@@ -47,8 +47,9 @@ Il simulatore implementa il modello fiscale e contributivo per un
 
 ### Prerequisiti
 - Python 3.10+
+- Flask 3.0.0+
 
-### Setup Rapido
+### Setup rapido
 ```bash
 # 1. Clona il repository o entra nella cartella
 cd jet-hr-calcolatrice-stipendi
